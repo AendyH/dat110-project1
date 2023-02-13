@@ -31,9 +31,26 @@ public class Controller  {
 		// connect to sensor and display RPC servers
 		// read value from sensor using RPC and write to display using RPC
 			
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		display = new DisplayStub(displayclient);
+		sensor = new SensorStub(sensorclient);
+
+		displayclient.connect();
+		sensorclient.connect();
+
+		int x = 1;
+		while(x < 6) {
+			Integer send = sensor.read();
+			String StringSend = send.toString();
+			display.write(StringSend);
+	
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			x++;
+		}
 		// TODO - END
 		
 		stopdisplay.stop();

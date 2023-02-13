@@ -48,8 +48,9 @@ public class RPCServer {
 		   // - invoke the method
 		   // - send back the message containing RPC reply
 			
-		   if (true)
-				throw new UnsupportedOperationException(TODO.method());
+		   requestmsg = connection.receive();
+
+		   rpcid = requestmsg.getData()[0];
 		   
 		   // TODO - END
 
@@ -57,6 +58,11 @@ public class RPCServer {
 		   if (rpcid == RPCCommon.RPIDSTOP) {
 			   stop = true;
 		   }
+		    RPCRemoteImpl imp = services.get(rpcid);
+			byte[] data = RPCUtils.decapsulate(requestmsg.getData());
+			byte[] method = imp.invoke(data);
+			byte[] returnmsg = RPCUtils.encapsulate(rpcid,method);
+			connection.send(new Message(returnmsg));
 		}
 	
 	}

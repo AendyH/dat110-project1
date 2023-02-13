@@ -14,15 +14,20 @@ public class MessageUtils {
 	public static byte[] encapsulate(Message message) {
 		
 		byte[] segment = null;
-		byte[] data;
+		byte[] data = message.getData();
 		
 		// TODO - START
 		
 		// encapulate/encode the payload data of the message and form a segment
 		// according to the segment format for the messaging layer
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		segment = new byte[SEGMENTSIZE];
+		segment[0] = (byte) data.length;
+		if (segment.length + 1 >= data.length) {
+			for (int x = 0; x < segment[0]; x++) {
+				segment[x+1] = data[x];
+			}
+		}
+			
 			
 		// TODO - END
 		return segment;
@@ -35,9 +40,14 @@ public class MessageUtils {
 		
 		// TODO - START
 		// decapsulate segment and put received payload data into a message
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		byte[] temp = new byte[segment[0]];
+		if (segment.length <= 128) {
+			for (int x = 0; x < segment[0]; x++) {
+				temp[x] = segment[x+1];
+			}
+			message = new Message(temp);
+		}
+			
 		
 		// TODO - END
 		
